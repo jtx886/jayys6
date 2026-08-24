@@ -1,0 +1,23 @@
+RewriteEngine On
+
+# 禁止直接访问includes和config目录
+RewriteRule ^(includes|config)/ - [F,L]
+
+# 禁止访问敏感文件
+&lt;FilesMatch "\.(env|log|sql|md)$"&gt;
+    Order allow,deny
+    Deny from all
+&lt;/FilesMatch&gt;
+
+# PHP配置（兼容InfinityFree）
+&lt;IfModule mod_php.c&gt;
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 60
+&lt;/IfModule&gt;
+
+# 默认页面
+DirectoryIndex index.php index.html
+
+# 错误页面
+ErrorDocument 404 /index.php
